@@ -2157,20 +2157,6 @@ export var qrcode = (function () {
             //---------------------------------
             // Global Color Map
 
-            // Color Index 0 - Black
-            out.writeByte(0x00);
-            out.writeByte(0x00);
-            out.writeByte(0x00);
-
-            // Color Index 1 - White
-            out.writeByte(0xff);
-            out.writeByte(0xff);
-            out.writeByte(0xff);
-
-            // Color Index 2 - green
-            out.writeByte(0x00);
-            out.writeByte(0xff);
-            out.writeByte(0x00);
 
             //---------------------------------
             // Image Descriptor
