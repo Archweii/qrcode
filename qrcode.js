@@ -601,7 +601,7 @@ export var qrcode = (function () {
                 if (min <= x && x < max && min <= y && y < max) {
                     var c = Math.floor((x - min) / cellSize);
                     var r = Math.floor((y - min) / cellSize);
-                    return _this.isDark(r, c) ? 0 : 1;
+                    return _this.isDark(r, c) ? 2 : 1;
                 } else {
                     return 1;
                 }
@@ -2101,6 +2101,7 @@ export var qrcode = (function () {
 
     //---------------------------------------------------------------------
     // gifImage (B/W)
+    // Docs: https://www.w3.org/Graphics/GIF/spec-gif87.txt
     //---------------------------------------------------------------------
 
     var gifImage = function (width, height) {
@@ -2123,22 +2124,45 @@ export var qrcode = (function () {
             //---------------------------------
             // Screen Descriptor
 
+            // 2 Bytes
             out.writeShort(_width);
+
+            // 2 Bytes
             out.writeShort(_height);
 
+            /**
+             * 1 Byte
+             * 
+             * 7 | 6 5 4 | 3 | 2 1 0 |
+             * M | cr    | 0 | pixel |
+             * 
+             * M        = 1 Global color map follows Descriptor
+             * cr+1     = # bits of color resolution
+             * pixel+1  = # bits/pixel in image
+             * 
+             * In The current value 0x80 the M field is set to 1 meaning we use the Global color map
+             * 1 0 0 0 0 0 0 0
+             */
             out.writeByte(0x80); // 2bit
+
+            /**
+             * background=Color index of screen background
+             *  color is defined from the Global color map or default map if none specified.
+             */
             out.writeByte(0);
+
+            // Empty separator byte.
             out.writeByte(0);
 
             //---------------------------------
             // Global Color Map
 
-            // black
-            out.writeByte(0xff);
-            out.writeByte(0xff);
-            out.writeByte(0xff);
+            // Color Index 0 - Black
+            out.writeByte(0x00);
+            out.writeByte(0x00);
+            out.writeByte(0x00);
 
-            // white
+            // Color Index 1 - White
             out.writeByte(0xff);
             out.writeByte(0xff);
             out.writeByte(0xff);
