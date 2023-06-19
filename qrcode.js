@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 //---------------------------------------------------------------------
 //
 // QR Code Generator for JavaScript
@@ -15,7 +16,7 @@
 //
 //---------------------------------------------------------------------
 
-export var qrcode = (function () {
+export const qrcode = (function () {
     //---------------------------------------------------------------------
     // qrcode
     //---------------------------------------------------------------------
@@ -25,7 +26,7 @@ export var qrcode = (function () {
      * @param typeNumber 1 to 40
      * @param errorCorrectionLevel 'L','M','Q','H'
      */
-    var qrcode = function (typeNumber, errorCorrectionLevel) {
+    const qrcode = function (typeNumber, errorCorrectionLevel) {
         var PAD0 = 0xec;
         var PAD1 = 0x11;
 
@@ -601,7 +602,7 @@ export var qrcode = (function () {
                 if (min <= x && x < max && min <= y && y < max) {
                     var c = Math.floor((x - min) / cellSize);
                     var r = Math.floor((y - min) / cellSize);
-                    return _this.isDark(r, c) ? 2 : 1;
+                    return _this.isDark(r, c) ? 1 : 0;
                 } else {
                     return 1;
                 }
@@ -2119,7 +2120,7 @@ export var qrcode = (function () {
             //---------------------------------
             // GIF Signature
 
-
+            out.writeString("GIF87a");
 
             //---------------------------------
             // Screen Descriptor
@@ -2140,7 +2141,7 @@ export var qrcode = (function () {
              * cr+1     = # bits of color resolution
              * pixel+1  = # bits/pixel in image
              * 
-             * In The current value 0x80 the M field is set to 1 meaning we use the Global color map
+             * In The current value 0x80 the M field is set to 1 meaning we use the Globla color map
              * 1 0 0 0 0 0 0 0
              */
             out.writeByte(0x80); // 2bit
@@ -2157,20 +2158,15 @@ export var qrcode = (function () {
             //---------------------------------
             // Global Color Map
 
-            // Color Index 0 - Black
-            out.writeByte(0x00);
-            out.writeByte(0x00);
-            out.writeByte(0x00);
-
-            // Color Index 1 - White
+            // Color Index 0 - Background color
             out.writeByte(0xff);
             out.writeByte(0xff);
             out.writeByte(0xff);
 
-            // Color Index 2 - green
+            // Color Index 1 - Main color
             out.writeByte(0x00);
-            out.writeByte(0xff);
-            out.writeByte(0x00);
+            out.writeByte(0xec);
+            out.writeByte(0xad);
 
             //---------------------------------
             // Image Descriptor
