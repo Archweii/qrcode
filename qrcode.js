@@ -2164,9 +2164,9 @@ export const qrcode = (function () {
             out.writeByte(0xff);
 
             // Color Index 1 - Main color
-            out.writeByte(0x00);
-            out.writeByte(0xec);
-            out.writeByte(0xad);
+            out.writeByte(0x18);
+            out.writeByte(0x3e);
+            out.writeByte(0x4f);
 
             //---------------------------------
             // Image Descriptor
