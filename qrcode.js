@@ -2150,7 +2150,7 @@ export const qrcode = (function () {
              * background=Color index of screen background
              *  color is defined from the Global color map or default map if none specified.
              */
-            out.writeByte(1);
+            out.writeByte(0);
 
             // Empty separator byte.
             out.writeByte(0);
